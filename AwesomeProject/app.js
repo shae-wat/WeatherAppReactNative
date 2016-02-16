@@ -2,9 +2,9 @@ import React from "react-native";
 
 let { View, Text, StyleSheet, Image } = React;
 
-let API_KEY = '85709eec804fd0f1065b210fa3dc2548';
-
 let getImage = require('./getImage');
+let auth = require('./auth.json');
+
 
 let App = React.createClass({
 	getInitialState: function() {
@@ -19,7 +19,7 @@ let App = React.createClass({
 	},
 
 	componentWillMount: function() {
-		fetch('https://api.forecast.io/forecast/' + API_KEY + '/45.8267,-122.423')
+		fetch('https://api.forecast.io/forecast/' + auth.apiKey + '/45.8267,-122.423')
 			.then(res => res.json())
 			.then(data => {
 				this.setState({
