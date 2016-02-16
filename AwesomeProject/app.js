@@ -1,8 +1,10 @@
 import React from "react-native";
 
-let { View, Text, StyleSheet } = React;
+let { View, Text, StyleSheet, Image } = React;
 
 let API_KEY = '85709eec804fd0f1065b210fa3dc2548';
+
+let getImage = require('./getImage');
 
 let App = React.createClass({
 	getInitialState: function() {
@@ -12,6 +14,7 @@ let App = React.createClass({
 			humidity: '',
 			wind: '',
 			icon: '',
+			loading: true,
 		}
 	},
 
@@ -25,23 +28,34 @@ let App = React.createClass({
 					humidity: data.currently.humidity,
 					wind: data.currently.windSpeed,
 					icon: data.currently.icon,
+					loading: false,
 				})
 			})
 	},
 
 	render: function () {
-		return (
-			<View style={styles.container}>
-				<View style={[styles.half, styles.center, styles.vertical]}>
-					<Text style={styles.text}>{this.state.summary}</Text>
+		if (this.state.loading) {
+			return (
+				<View style={[styles.container, styles.half, styles.center, styles.vertical]}> 
+					<Text style={styles.text}>Loading...</Text>
 				</View>
-				<View style={[styles.half, styles.center]}>
-					<Text style={styles.text}>Temperature: {this.state.temp}°</Text>
-					<Text style={styles.text}>Humidity: {this.state.humidity}</Text>
-					<Text style={styles.text}>Wind Speed: {this.state.wind}mph</Text>
+			);
+		}
+		else {
+			return (
+				<View style={styles.container}>
+					<View style={[styles.half, styles.center, styles.vertical]}>
+						<Image source={getImage(this.state.icon)} style={styles.image} />
+						<Text style={styles.text}>{this.state.summary}</Text>
+					</View>
+					<View style={[styles.half, styles.center]}>
+						<Text style={styles.text}>Temperature: {this.state.temp}°</Text>
+						<Text style={styles.text}>Humidity: {this.state.humidity}</Text>
+						<Text style={styles.text}>Wind Speed: {this.state.wind}mph</Text>
+					</View>
 				</View>
-			</View>
-		);
+			);
+		}
 	}
 })
 
